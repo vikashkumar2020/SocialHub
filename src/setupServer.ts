@@ -19,6 +19,7 @@ import { createAdapter } from "@socket.io/redis-adapter";
 import compression from "compression";
 import cookieSession from "cookie-session";
 import {config} from "./config"
+import applicationRoutes from './routes'
 
 
 
@@ -79,7 +80,9 @@ export class SocialHubServer {
     app.use(urlencoded({ extended: true, limit: "50mb" }));
   }
 
-  private routesMiddleware(app: Application): void {}
+  private routesMiddleware(app: Application): void {
+    applicationRoutes(app);
+  }
 
   private globalErrorHandler(app: Application): void {}
 
