@@ -21,12 +21,12 @@
     "resolveJsonModule": true,
     "plugins": [
       {
-        "tranform": "typescript-transform-paths"
+        "transform": "typescript-transform-paths"
       },
       {
-        "tranform": "typescript-transform-paths",
+        "transform": "typescript-transform-paths",
         "afterDeclarations": true
-      }
+      },
     ],
     "paths":{
       "@global/*":["src/shared/globals/*"],
