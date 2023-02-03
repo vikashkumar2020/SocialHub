@@ -12,9 +12,9 @@ import { createAdapter } from '@socket.io/redis-adapter';
 import Logger from 'bunyan';
 import compression from 'compression';
 import cookieSession from 'cookie-session';
-import { config } from './config';
-import applicationRoutes from './routes';
-import { CustomError, IErrorResponse } from './shared/globals/helpers/error-handler';
+import { config } from '@root/config';
+import applicationRoutes from '@root/routes';
+import { CustomError, IErrorResponse } from '@global/helpers/error-handler';
 
 const SERVER_PORT = 5000;
 const log: Logger = config.createLogger('server');
@@ -122,5 +122,7 @@ export class SocialHubServer {
     });
   }
 
-  private socketIOConnections(io: Server): void {}
+  private socketIOConnections(io: Server): void {
+    log.info('socket connection');
+  }
 }
