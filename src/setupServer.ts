@@ -16,6 +16,7 @@ import "express-async-errors";
 import { Server } from "socket.io";
 import { createClient } from "redis";
 import { createAdapter } from "@socket.io/redis-adapter";
+import Logger from "bunyan";
 import compression from "compression";
 import cookieSession from "cookie-session";
 import { config } from "./config";
@@ -26,6 +27,7 @@ import {
 } from "./shared/globals/helpers/error-handler";
 
 const SERVER_PORT = 5000;
+const log : Logger = config.createLogger('server');
 export class SocialHubServer {
   private app: Application; // instance of an express application -- private
 
@@ -98,7 +100,7 @@ export class SocialHubServer {
         res: Response,
         next: NextFunction
       ) => {
-        console.log(error);
+        log.error(error);
         if (error instanceof CustomError)
           return res.status(error.statusCode).json(error.serializeError());
 
@@ -114,7 +116,7 @@ export class SocialHubServer {
       this.startHttpServer(httpServer);
       this.socketIOConnections(socketIO);
     } catch (error) {
-      console.log(error);
+      log.error(error);
     }
   }
 
@@ -134,9 +136,9 @@ export class SocialHubServer {
   }
 
   private startHttpServer(httpServer: http.Server): void {
-    console.log(`Server has started with process ${process.pid}`);
+    log.info(`Server has started with process ${process.pid}`);
     httpServer.listen(SERVER_PORT, () => {
-      console.log(`Server Running on Port ${SERVER_PORT}`);
+      log.info(`Server Running on Port ${SERVER_PORT}`);
     });
   }
 
