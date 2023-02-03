@@ -1,33 +1,23 @@
-import {
-  Application,
-  json,
-  urlencoded,
-  Response,
-  Request,
-  NextFunction,
-} from "express";
-import http from "http";
-import cors from "cors";
-import helmet from "helmet";
-import hpp from "hpp";
-import cookierSession from "cookie-session";
-import HTTP_STATUS from "http-status-codes";
-import "express-async-errors";
-import { Server } from "socket.io";
-import { createClient } from "redis";
-import { createAdapter } from "@socket.io/redis-adapter";
-import Logger from "bunyan";
-import compression from "compression";
-import cookieSession from "cookie-session";
-import { config } from "./config";
-import applicationRoutes from "./routes";
-import {
-  CustomError,
-  IErrorResponse,
-} from "./shared/globals/helpers/error-handler";
+import { Application, json, urlencoded, Response, Request, NextFunction } from 'express';
+import http from 'http';
+import cors from 'cors';
+import helmet from 'helmet';
+import hpp from 'hpp';
+import cookierSession from 'cookie-session';
+import HTTP_STATUS from 'http-status-codes';
+import 'express-async-errors';
+import { Server } from 'socket.io';
+import { createClient } from 'redis';
+import { createAdapter } from '@socket.io/redis-adapter';
+import Logger from 'bunyan';
+import compression from 'compression';
+import cookieSession from 'cookie-session';
+import { config } from './config';
+import applicationRoutes from './routes';
+import { CustomError, IErrorResponse } from './shared/globals/helpers/error-handler';
 
 const SERVER_PORT = 5000;
-const log : Logger = config.createLogger('server');
+const log: Logger = config.createLogger('server');
 export class SocialHubServer {
   private app: Application; // instance of an express application -- private
 
@@ -52,10 +42,10 @@ export class SocialHubServer {
     // cookie session
     app.use(
       cookieSession({
-        name: "session",
+        name: 'session',
         keys: [config.SECRET_KEY_ONE!, config.SECRET_KEY_TWO!],
         maxAge: 24 * 7 * 3600000,
-        secure: config.NODE_ENV !== "development",
+        secure: config.NODE_ENV !== 'development'
       })
     );
 
@@ -68,7 +58,7 @@ export class SocialHubServer {
         origin: config.CLIENT_URL,
         credentials: true,
         optionsSuccessStatus: 200,
-        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
       })
     );
   }
@@ -77,10 +67,10 @@ export class SocialHubServer {
     app.use(compression());
     app.use(
       json({
-        limit: "50mb",
+        limit: '50mb'
       })
     );
-    app.use(urlencoded({ extended: true, limit: "50mb" }));
+    app.use(urlencoded({ extended: true, limit: '50mb' }));
   }
 
   private routesMiddleware(app: Application): void {
@@ -88,25 +78,15 @@ export class SocialHubServer {
   }
 
   private globalErrorHandler(app: Application): void {
-    app.all("*", (req: Request, res: Response) => {
-      res
-        .status(HTTP_STATUS.NOT_FOUND)
-        .json({ message: `${req.originalUrl} not found` });
+    app.all('*', (req: Request, res: Response) => {
+      res.status(HTTP_STATUS.NOT_FOUND).json({ message: `${req.originalUrl} not found` });
     });
-    app.use(
-      (
-        error: IErrorResponse,
-        _req: Request,
-        res: Response,
-        next: NextFunction
-      ) => {
-        log.error(error);
-        if (error instanceof CustomError)
-          return res.status(error.statusCode).json(error.serializeError());
+    app.use((error: IErrorResponse, _req: Request, res: Response, next: NextFunction) => {
+      log.error(error);
+      if (error instanceof CustomError) return res.status(error.statusCode).json(error.serializeError());
 
-        next();
-      }
-    );
+      next();
+    });
   }
 
   private async startServer(app: Application): Promise<void> {
@@ -124,8 +104,8 @@ export class SocialHubServer {
     const io: Server = new Server(httpServer, {
       cors: {
         origin: config.CLIENT_URL,
-        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-      },
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+      }
     });
 
     const pubClient = createClient({ url: config.REDIS_HOST });
