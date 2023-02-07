@@ -1,3 +1,3 @@
 ## SocailHub
 
-The Socail, Platform
+The SocialHub, Platform to build Social Community
