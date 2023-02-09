@@ -6,7 +6,7 @@ export function uploads(
   overwrite?: boolean,
   invalidate?: boolean
 ): Promise<UploadApiResponse | UploadApiErrorResponse | undefined> {
-  console.log(public_id,overwrite,invalidate);
+  console.log(public_id, overwrite, invalidate);
   return new Promise((resolve) => {
     cloudinary.v2.uploader.upload(
       file,

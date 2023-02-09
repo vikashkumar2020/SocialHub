@@ -3,7 +3,6 @@ import http from 'http';
 import cors from 'cors';
 import helmet from 'helmet';
 import hpp from 'hpp';
-import cookierSession from 'cookie-session';
 import HTTP_STATUS from 'http-status-codes';
 import 'express-async-errors';
 import { Server } from 'socket.io';
@@ -122,6 +121,7 @@ export class SocialHubServer {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private socketIOConnections(io: Server): void {
     log.info('socket connection');
   }

@@ -7,8 +7,6 @@ import { authService } from '@service/db/auth.service';
 import { BadRequestError } from '@global/helpers/error-handler';
 import { loginSchema } from '@auth/schemes/signin';
 import { IAuthDocument } from '@auth/interfaces/auth.interface';
-import { IUserDocument } from '@user/interfaces/user.interface';
-import { userService } from '@service/db/user.service';
 
 export class SignIn {
   @joiValidation(loginSchema)
@@ -52,6 +50,5 @@ export class SignIn {
     // } as IUserDocument;
 
     res.status(HTTP_STATUS.OK).json({ message: 'User login Successfull', user: existingUser, token: userJwt });
-
   }
 }
