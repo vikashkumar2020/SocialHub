@@ -4,10 +4,9 @@ import { createBullBoard } from '@bull-board/api';
 import { BullAdapter } from '@bull-board/api/bullAdapter';
 import { ExpressAdapter } from '@bull-board/express';
 import { config } from '@root/config';
-import {  IAuthJob } from '@auth/interfaces/auth.interface';
+import { IAuthJob } from '@auth/interfaces/auth.interface';
 
-type IBaseJobData =
-| IAuthJob;
+type IBaseJobData = IAuthJob;
 
 let bullAdapters: BullAdapter[] = [];
 
@@ -32,7 +31,7 @@ export abstract class BaseQueue {
     this.log = config.createLogger(`${queueName}Queue`);
 
     this.queue.on('completed', (job: Job) => {
-      job.remove();
+      job.remove(); // remove to track completed jobs
     });
     this.queue.on('global:completed', (jobId: string) => {
       this.log.info(`Job ${jobId} completed`);
