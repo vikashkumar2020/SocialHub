@@ -26,6 +26,7 @@ class UserService
       { $unwind: '$authId' },
       { $project: this.aggregateProject() }
     ]);
+    console.log(authId,users);
     return users[0];
   }
 

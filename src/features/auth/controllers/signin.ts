@@ -27,11 +27,11 @@ export class SignIn {
       throw new BadRequestError('Invalid credentials');
     }
 
-    const user: IUserDocument = await userService.getUserByAuthId(`${existingUser._id}`);
+    // const user: IUserDocument = await userService.getUserByAuthId(`${existingUser._id}`);
 
     const userJwt: string = JWT.sign(
       {
-        userId: user._id,
+        userId: existingUser._id,
         uId: existingUser.uId,
         email: existingUser.email,
         username: existingUser.username,
@@ -41,17 +41,17 @@ export class SignIn {
     );
 
     req.session = { jwt: userJwt };
-    const userDocument: IUserDocument = {
-      ...user,
-      authId: existingUser!._id,
-      username: existingUser!.username,
-      email: existingUser!.email,
-      avatarColor: existingUser!.avatarColor,
-      uId: existingUser!.uId,
-      createdAt: existingUser!.createdAt,
-    } as IUserDocument;
+    // const userDocument: IUserDocument = {
+    //   ...user,
+    //   authId: existingUser!._id,
+    //   username: existingUser!.username,
+    //   email: existingUser!.email,
+    //   avatarColor: existingUser!.avatarColor,
+    //   uId: existingUser!.uId,
+    //   createdAt: existingUser!.createdAt,
+    // } as IUserDocument;
 
-    res.status(HTTP_STATUS.OK).json({ message: 'User login Successfull', user: userDocument, token: userJwt });
+    res.status(HTTP_STATUS.OK).json({ message: 'User login Successfull', user: existingUser, token: userJwt });
 
   }
 }

@@ -54,7 +54,7 @@ export class SignUp {
 
     // add to database
 
-    // omit(userDataForCache, ['uId', 'username', 'email', 'avatarColor', 'password']);
+    omit(userDataForCache, ['uId', 'username', 'email', 'avatarColor', 'password']);
     authQueue.addAuthUserJob('addAuthUserToDB', { value: userDataForCache });
     userQueue.addUserJob('addUserToDB', { value: userDataForCache });
 
