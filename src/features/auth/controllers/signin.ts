@@ -7,6 +7,7 @@ import { authService } from '@service/db/auth.service';
 import { BadRequestError } from '@global/helpers/error-handler';
 import { loginSchema } from '@auth/schemes/signin';
 import { IAuthDocument } from '@auth/interfaces/auth.interface';
+import { mailTransport } from '@service/emails/mail.transport';
 
 export class SignIn {
   @joiValidation(loginSchema)
@@ -37,17 +38,8 @@ export class SignIn {
       },
       config.JWT_TOKEN!
     );
-
-    req.session = { jwt: userJwt };
-    // const userDocument: IUserDocument = {
-    //   ...user,
-    //   authId: existingUser!._id,
-    //   username: existingUser!.username,
-    //   email: existingUser!.email,
-    //   avatarColor: existingUser!.avatarColor,
-    //   uId: existingUser!.uId,
-    //   createdAt: existingUser!.createdAt,
-    // } as IUserDocument;
+      await mailTransport.sendMail('kvvik2020@gmail.com','Welcome to mental hospital','Thanks to be joining us');
+      req.session = { jwt: userJwt };
 
     res.status(HTTP_STATUS.OK).json({ message: 'User login Successfull', user: existingUser, token: userJwt });
   }
